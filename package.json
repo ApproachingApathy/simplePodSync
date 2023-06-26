@@ -5,11 +5,18 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts"
   },
+  "prisma": {
+    "seed": "bun run prisma/seed.ts"
+  },
   "dependencies": {
+    "@elysiajs/cookie": "^0.5.2",
+    "@prisma/client": "^4.16.1",
+    "dayjs": "^1.11.8",
     "elysia": "latest"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "prisma": "^4.16.1"
   },
   "module": "src/index.js"
 }
