@@ -49,7 +49,7 @@ async function main() {
         update: {}
     })
   }
-  
+
   await prisma.user.upsert({
     where: {
       username: "test",
@@ -58,7 +58,10 @@ async function main() {
       username: "test",
       password: {
         create: {
-          value: "password",
+          value: await Bun.password.hash("password", {
+            algorithm: "bcrypt",
+            cost: 4
+          }),
         },
       },
     },

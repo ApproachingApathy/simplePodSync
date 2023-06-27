@@ -34,7 +34,8 @@ export const authController = (app: Elysia) =>
           const decodedPayload = atob(headers.authorization.split(" ")[1]);
           const [,decodedPassword] = decodedPayload.split(":")
 
-          if (user.password?.value !== decodedPassword) {
+          const doesPasswordMatches = await Bun.password.verify(decodedPassword, user.password?.value as string)
+          if (!doesPasswordMatches) {
             set.status = 401;
             return;
           }
