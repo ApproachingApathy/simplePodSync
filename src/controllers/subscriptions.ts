@@ -77,8 +77,8 @@ export const subscriptionController = (app: Elysia) =>
                   connect: {
                     clientId_ownerId: {
                       clientId: params.device,
-                      ownerId: session?.user.id as string
-                    }
+                      ownerId: session?.user.id as string,
+                    },
                   },
                 },
                 subscription: {
@@ -107,8 +107,8 @@ export const subscriptionController = (app: Elysia) =>
                   connect: {
                     clientId_ownerId: {
                       clientId: params.device,
-                      ownerId: session?.user.id as string
-                    }
+                      ownerId: session?.user.id as string,
+                    },
                   },
                 },
                 subscription: {
@@ -127,17 +127,17 @@ export const subscriptionController = (app: Elysia) =>
 
           return {
             timestamp: dayjs().toDate(),
-            update_urls: []
-          }
+            update_urls: [],
+          };
         },
         {
           body: t.Object({
             add: t.Array(t.String()),
-            remove: t.Array(t.String())
+            remove: t.Array(t.String()),
           }),
           beforeHandle: [
             isSignedIn,
-            (req) => isUserNameSessionAndPathMatch(req)
+            (req) => isUserNameSessionAndPathMatch(req),
           ],
         }
       )

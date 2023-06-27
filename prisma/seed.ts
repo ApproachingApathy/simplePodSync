@@ -28,10 +28,10 @@ async function main() {
 
   for (let sa of subscriptionActionTypes) {
     await prisma.subscriptionActionType.upsert({
-        where: sa,
-        create: sa,
-        update: {}
-    })
+      where: sa,
+      create: sa,
+      update: {},
+    });
   }
 
   const episodeActionTypes: Prisma.EpisodeActionTypeCreateInput[] = [
@@ -39,15 +39,15 @@ async function main() {
     { value: "delete" },
     { value: "play" },
     { value: "new" },
-    { value: "flattr" }
-  ]
+    { value: "flattr" },
+  ];
 
   for (let ea of episodeActionTypes) {
     await prisma.episodeActionType.upsert({
-        where: ea,
-        create: ea,
-        update: {}
-    })
+      where: ea,
+      create: ea,
+      update: {},
+    });
   }
 
   await prisma.user.upsert({
@@ -60,12 +60,11 @@ async function main() {
         create: {
           value: await Bun.password.hash("password", {
             algorithm: "bcrypt",
-            cost: 4
+            cost: 4,
           }),
         },
       },
     },
     update: {},
   });
-
 }

@@ -32,30 +32,33 @@ export const authController = (app: Elysia) =>
 
           // Decoded payload in the form `username:password`
           const decodedPayload = atob(headers.authorization.split(" ")[1]);
-          const [,decodedPassword] = decodedPayload.split(":")
+          const [, decodedPassword] = decodedPayload.split(":");
 
-          const doesPasswordMatches = await Bun.password.verify(decodedPassword, user.password?.value as string)
+          const doesPasswordMatches = await Bun.password.verify(
+            decodedPassword,
+            user.password?.value as string
+          );
           if (!doesPasswordMatches) {
             set.status = 401;
             return;
           }
 
-          const expiresAt = dayjs().add(7, "days").toDate()
+          const expiresAt = dayjs().add(7, "days").toDate();
 
           const newSession = await db.session.create({
             data: {
               userId: user.id,
-              expiresAt
-            }
-          })
+              expiresAt,
+            },
+          });
 
           setCookie("sessionid", newSession.id, {
             // secure: true,
             expires: expiresAt,
             sameSite: true,
             httpOnly: true,
-            path: "/"
-          })
+            path: "/",
+          });
 
           return;
         },
