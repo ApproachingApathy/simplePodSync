@@ -5,17 +5,28 @@ import {
   subscriptionController,
   episodesController,
 } from "./controllers";
+import { setupPlugin } from "./plugins/setup";
+import { logger } from "./logger/logger";
 
 const app = new Elysia()
-  .on("beforeHandle", (context) => {
-    console.log("--- Request ---");
-    console.log("url:", context.request.method, context.request.url);
-    console.log("headers:", context.request.headers);
-    console.log("body", context.body)
-    console.log("---------------");
+  .use(setupPlugin)
+  .on("request", ({ requestId }) => {
+    logger.debug(`Received Request ${requestId}`)
   })
-  .on("error", ({ code, error }) => {
-    console.error(error);
+  .on("beforeHandle", (context) => {
+    logger.debug("Handling Request", {
+      requestId: context.requestId,
+      method: context.request.method,
+      url: context.request.url,
+      headers: context.request.headers,
+      body: context.body
+    })
+  })
+  .on("afterHandle", ({ requestId }) => {
+    logger.debug(`Completed Request ${requestId}`)
+  })
+  .on("error", ({ error }) => {
+    logger.error(error)
   })
   .get("/info", () => "Simple Pod Sync v0.0.1")
   .group("/api", (app) =>
@@ -30,8 +41,8 @@ const app = new Elysia()
   .get("/", () => "Hello Elysia")
   .listen(3000);
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+logger.info(
+  `Elysia is running at ${app.server?.hostname}:${app.server?.port}`
 );
 
 export type App = typeof app;

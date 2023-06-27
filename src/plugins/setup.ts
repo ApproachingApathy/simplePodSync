@@ -2,12 +2,21 @@ import cookie from "@elysiajs/cookie";
 import { authPlugin } from "./auth";
 import Elysia from "elysia";
 import { db } from "../db/db";
+import { randomUUID } from "crypto";
 
 const SESSION_ID_COOKIE_NAME = "sessionid";
 
 export const setupPlugin = (app: Elysia) =>
   app
     // remove ".json from params"
+    .derive(() => {
+        return {
+            requestReceivedAt: Date.now()
+        }
+    })
+    .on("afterHandle", ({ set, requestReceivedAt }) => {
+        set.headers["X-Response-Time"] = `${Date.now() - requestReceivedAt}ms`
+    })
     .onTransform(({ params }) => {
       if (!params) return;
       const cleanedParamEntries = Object.entries(params).map(([key, value]) => {
@@ -44,5 +53,8 @@ export const setupPlugin = (app: Elysia) =>
       return {
         session: session ?? undefined,
       };
+    })
+    .derive(({request}) => {
+      return { requestId: request.headers.get("x-request-id") ?? randomUUID() };
     });
 // .use(authPlugin)

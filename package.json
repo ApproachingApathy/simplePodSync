@@ -12,7 +12,8 @@
     "@elysiajs/cookie": "^0.5.2",
     "@prisma/client": "^4.16.1",
     "dayjs": "^1.11.8",
-    "elysia": "latest"
+    "elysia": "latest",
+    "winston": "^3.9.0"
   },
   "devDependencies": {
     "bun-types": "latest",
