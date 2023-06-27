@@ -13,7 +13,7 @@ datasource db {
 model User {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime?
+  updatedAt DateTime? @updatedAt
   username String @unique
   password Password?
   sessions Session[]
@@ -23,7 +23,7 @@ model User {
 model Password {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime?
+  updatedAt DateTime? @updatedAt
   value String
   user User @relation(fields: [userId], references: [id])
   userId String @unique
@@ -32,7 +32,7 @@ model Password {
 model Session {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime?
+  updatedAt DateTime? @updatedAt
   expiresAt DateTime
   invalidated Boolean @default(false)
   user User @relation(fields: [userId], references: [id])
@@ -41,17 +41,70 @@ model Session {
 
 model Device {
   id String @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime?
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime? @updatedAt
+  clientId String @unique // Client generated id
   caption String
   type DeviceType @relation(fields: [deviceTypeId], references: [id])
   deviceTypeId Int  
   owner User @relation(fields: [ownerId], references: [id])
   ownerId String
+  subscriptionActions SubscriptionAction[]
+  episodeActions EpisodeAction[]
 }
 
 model DeviceType {
   id Int @id @default(autoincrement())
+  createdAt DateTime @default(now()) 
   value String @unique
   devices Device[]
+}
+
+model Subscription {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now()) 
+  url String @unique
+  actions SubscriptionAction[]
+  episodeActions EpisodeAction[]
+}
+
+model SubscriptionAction {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String
+  type SubscriptionActionType @relation(fields: [actionTypeId], references: [id])
+  actionTypeId Int
+  device Device @relation(fields: [deviceId], references: [id])
+  deviceId String
+}
+
+model SubscriptionActionType {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  value String @unique
+  actions SubscriptionAction[]
+}
+
+model EpisodeAction {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+  episodeUrl String
+  device Device @relation(fields: [deviceId], references: [id])
+  deviceId String
+  type EpisodeActionType @relation(fields: [episodeActionTypeId], references: [id])
+  timestamp DateTime?
+  started Int?
+  position Int?
+  total Int?
+  episodeActionTypeId Int
+  subscriptionId String
+}
+
+model EpisodeActionType {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  value String @unique
+  actions EpisodeAction[]
 }

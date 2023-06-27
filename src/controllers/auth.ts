@@ -2,14 +2,15 @@ import cookie from "@elysiajs/cookie";
 import Elysia, { t } from "elysia";
 import { db } from "../db/db";
 import dayjs from "dayjs";
+import { setupPlugin } from "../plugins/setup";
 
 export const authController = (app: Elysia) =>
   app.group("/auth", (app) =>
     app
-      .use(cookie())
+      .use(setupPlugin)
       .post(
         "/:username/login.json",
-        async ({ params: { username }, setCookie, cookie, set, headers }) => {
+        async ({ params: { username }, setCookie, session, set, headers }) => {
           if (!headers.authorization) {
             set.status = 401;
             return;
@@ -33,26 +34,26 @@ export const authController = (app: Elysia) =>
           const decodedPayload = atob(headers.authorization.split(" ")[1]);
           const [,decodedPassword] = decodedPayload.split(":")
 
-          console.log(user.password?.value, decodedPassword)
           if (user.password?.value !== decodedPassword) {
             set.status = 401;
             return;
           }
 
-          const expiresAt = dayjs().add(7).toDate()
+          const expiresAt = dayjs().add(7, "days").toDate()
 
-          const session = await db.session.create({
+          const newSession = await db.session.create({
             data: {
               userId: user.id,
               expiresAt
             }
           })
 
-          setCookie("sessionid", session.id, {
-            secure: true,
+          setCookie("sessionid", newSession.id, {
+            // secure: true,
             expires: expiresAt,
             sameSite: true,
-            httpOnly: true
+            httpOnly: true,
+            path: "/"
           })
 
           return;
