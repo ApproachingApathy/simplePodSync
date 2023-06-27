@@ -3,6 +3,8 @@ import { setupPlugin } from "../plugins/setup";
 import { db } from "../db/db";
 import dayjs from "dayjs";
 import { EpisodeAction } from "@prisma/client";
+import { isSignedIn } from "../middleware/isSignedIn";
+import { isUserNameSessionAndPathMatch } from "../middleware/isUsernameMatch";
 
 const convertEpisodeActionForTransport = (episodeAction: { device: { clientId: string }, subscription: { url: string }, type: { value: string }} & EpisodeAction) => {
     return {
@@ -19,14 +21,17 @@ const convertEpisodeActionForTransport = (episodeAction: { device: { clientId: s
 
 export const episodesController = (app: Elysia) => app.group("/episodes", app => app
     .use(setupPlugin)
-    .post("/:username", async ({ body }) => {
+    .post("/:username", async ({ body, session }) => {
         for (let episodeAction of body) {
             await db.episodeAction.create({
                 data: {
                     episodeUrl: episodeAction.episode,
                     device: {
                         connect: {
-                            clientId: episodeAction.device
+                            clientId_ownerId: {
+                                clientId: episodeAction.device,
+                                ownerId: session?.user.id as string
+                            }
                         }
                     },
                     subscription: {
@@ -67,7 +72,8 @@ export const episodesController = (app: Elysia) => app.group("/episodes", app =>
             started: t.Optional(t.Numeric()),
             position: t.Optional(t.Numeric()),
             total: t.Optional(t.Numeric())
-        }))
+        })),
+        beforeHandle: [isSignedIn, req => isUserNameSessionAndPathMatch(req)]
     })
     .get("/:username", async ({ query: { podcast, device, since, aggregated }}) => {
         const episodeActions = await db.episodeAction.findMany({
@@ -114,6 +120,7 @@ export const episodesController = (app: Elysia) => app.group("/episodes", app =>
             device: t.Optional(t.String()),
             since: t.Numeric(),
             aggregated: t.Optional(t.Boolean())
-        })
+        }),
+        beforeHandle: [isSignedIn, req => isUserNameSessionAndPathMatch(req)]
     })
 )

@@ -64,7 +64,7 @@ export const subscriptionController = (app: Elysia) =>
       )
       .post(
         "/:username/:device",
-        async ({ body, params }) => {
+        async ({ body, params, session }) => {
           for (let url of body.add) {
             await db.subscriptionAction.create({
               data: {
@@ -75,7 +75,10 @@ export const subscriptionController = (app: Elysia) =>
                 },
                 device: {
                   connect: {
-                    clientId: params.device,
+                    clientId_ownerId: {
+                      clientId: params.device,
+                      ownerId: session?.user.id as string
+                    }
                   },
                 },
                 subscription: {
@@ -102,7 +105,10 @@ export const subscriptionController = (app: Elysia) =>
                 },
                 device: {
                   connect: {
-                    clientId: params.device,
+                    clientId_ownerId: {
+                      clientId: params.device,
+                      ownerId: session?.user.id as string
+                    }
                   },
                 },
                 subscription: {

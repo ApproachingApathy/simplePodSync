@@ -43,7 +43,7 @@ model Device {
   id String @id @default(uuid())
   createdAt DateTime @default(now()) 
   updatedAt DateTime? @updatedAt
-  clientId String @unique // Client generated id
+  clientId String // Client generated id
   caption String
   type DeviceType @relation(fields: [deviceTypeId], references: [id])
   deviceTypeId Int  
@@ -51,6 +51,8 @@ model Device {
   ownerId String
   subscriptionActions SubscriptionAction[]
   episodeActions EpisodeAction[]
+  
+  @@unique([clientId, ownerId])
 }
 
 model DeviceType {

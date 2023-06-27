@@ -21,7 +21,10 @@ export const devicesController = (app: Elysia) => app
         .post("/:username/:device", async ({ params, body, session }) => {
             await db.device.upsert({
                 where: {
-                    clientId: params.device
+                    clientId_ownerId: {
+                        clientId: params.device,
+                        ownerId: session?.user.id as string
+                    }
                 },
                 create: {
                     clientId: params.device,
