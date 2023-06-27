@@ -20,7 +20,6 @@ const convertEpisodeActionForTransport = (episodeAction: { device: { clientId: s
 export const episodesController = (app: Elysia) => app.group("/episodes", app => app
     .use(setupPlugin)
     .post("/:username", async ({ body }) => {
-        console.log(body)
         for (let episodeAction of body) {
             await db.episodeAction.create({
                 data: {

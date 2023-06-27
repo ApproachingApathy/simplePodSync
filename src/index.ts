@@ -1,10 +1,5 @@
 import { Elysia, t } from "elysia";
-import { cookie } from "@elysiajs/cookie"
-import { authController } from "./controllers";
-import { authPlugin } from "./plugins/auth";
-import { devicesController } from "./controllers/devices";
-import { subscriptionController } from "./controllers/subscriptions";
-import { episodesController } from "./controllers/episodes";
+import { authController, devicesController, subscriptionController, episodesController } from "./controllers";
 
 const app = new Elysia()
 .on("request", (context) => {
