@@ -7,10 +7,11 @@ import {
 } from "./controllers";
 
 const app = new Elysia()
-  .on("request", (context) => {
+  .on("beforeHandle", (context) => {
     console.log("--- Request ---");
     console.log("url:", context.request.method, context.request.url);
     console.log("headers:", context.request.headers);
+    console.log("body", context.body)
     console.log("---------------");
   })
   .on("error", ({ code, error }) => {

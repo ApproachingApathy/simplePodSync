@@ -9,7 +9,7 @@ const convertDeviceForTransport = (
   dbDevice: { type: { value: string } } & Device
 ) => {
   return {
-    id: dbDevice.id,
+    id: dbDevice.clientId,
     caption: dbDevice.caption,
     type: dbDevice.type.value,
     // TODO
