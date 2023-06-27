@@ -1,15 +1,12 @@
-# Elysia with Bun runtime
+# Simple Pod Sync
+Simple Pod Sync is an implementation of a limited subset of the gpodder.net api for syncing podcasts with apps like AntennaPod.
 
-## Getting Started
-To get started with this template, simply paste this command into your terminal:
-```bash
-bun create elysia ./elysia-example
-```
+## Status
+The app currently successfully synchronizes with antenna but may have bugs or not work correctly. Various security and user checks are also missing which may allow users to edit others podcasts and subscriptions.
 
-## Development
-To start the development server run:
-```bash
-bun run dev
-```
+## Works With
+⚠️ Functional, expect bugs 
 
-Open http://localhost:3000/ with your browser to see the result.
+| App | Status |
+| --- | --- |
+| AntennaPod | ⚠️ | 

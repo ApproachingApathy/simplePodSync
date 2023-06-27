@@ -11,6 +11,7 @@ const app = new Elysia()
   console.log("--- Request ---")
   console.log("url:", context.request.method, context.request.url)
   console.log("headers:", context.request.headers)
+  console.log("---------------")
 })
 .on("error", ({code, error}) => {
   console.error(error)
