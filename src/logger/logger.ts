@@ -1,4 +1,5 @@
-import { createLogger, format, transports, config } from "winston"
+import { createLogger, format, transports } from "winston"
+import { config } from "../configuration/configuration"
 
 export const logger = createLogger({
     level: "debug",
@@ -7,8 +8,8 @@ export const logger = createLogger({
         service: "simplePodSync"
     },
     transports: [
-        new transports.File({ dirname: Bun.env.LOG_DIR, filename: "error.log", level: "error" }),
-        new transports.File({ dirname: Bun.env.LOG_DIR, filename: "combined.log", level: "info" }),
-        new transports.Console({ format: format.combine(format.timestamp(),  format.prettyPrint()), level: "" })
+        new transports.File({ dirname: config.log_dir, filename: "error.log", level: "error" }),
+        new transports.File({ dirname: config.log_dir, filename: "combined.log", level: "info" }),
+        new transports.Console({ format: format.combine(format.timestamp(),  format.prettyPrint({ colorize: true })), level: "" })
     ]
 })

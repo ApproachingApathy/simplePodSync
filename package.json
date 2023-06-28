@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@elysiajs/cookie": "^0.5.2",
+    "@iarna/toml": "^2.2.5",
     "@prisma/client": "^4.16.1",
     "dayjs": "^1.11.8",
+    "deepmerge-ts": "^5.1.0",
     "elysia": "latest",
     "winston": "^3.9.0"
   },

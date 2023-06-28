@@ -7,6 +7,8 @@ import {
 } from "./controllers";
 import { setupPlugin } from "./plugins/setup";
 import { logger } from "./logger/logger";
+import { config } from "./configuration/configuration";
+
 
 const app = new Elysia()
   .use(setupPlugin)
@@ -30,17 +32,18 @@ const app = new Elysia()
   })
   .get("/info", () => "Simple Pod Sync v0.0.1")
   .group("/api", (app) =>
-    app.group("/2", (app) =>
-      app
-        .use(authController)
-        .use(devicesController)
-        .use(subscriptionController)
-        .use(episodesController)
-    )
+  app.group("/2", (app) =>
+  app
+  .use(authController)
+  .use(devicesController)
+  .use(subscriptionController)
+  .use(episodesController)
+  )
   )
   .get("/", () => "Hello Elysia")
   .listen(3000);
-
+  
+logger.debug("Configuration", { config })
 logger.info(
   `Elysia is running at ${app.server?.hostname}:${app.server?.port}`
 );
