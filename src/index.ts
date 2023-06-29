@@ -8,6 +8,7 @@ import {
 import { setupPlugin } from "./plugins/setup";
 import { logger } from "./logger/logger";
 import { config } from "./configuration/configuration";
+import { appAuthController } from "./controllers/appAuth";
 
 
 const app = new Elysia()
@@ -31,6 +32,9 @@ const app = new Elysia()
     logger.error(error)
   })
   .get("/info", () => "Simple Pod Sync v0.0.1")
+  .group("/simple-sync/api", app => app
+    .use(appAuthController) 
+  )
   .group("/api", (app) =>
   app.group("/2", (app) =>
   app

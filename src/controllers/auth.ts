@@ -3,6 +3,7 @@ import Elysia, { t } from "elysia";
 import { db } from "../db/db";
 import dayjs from "dayjs";
 import { setupPlugin } from "../plugins/setup";
+import { logger } from "../logger/logger";
 
 export const authController = (app: Elysia) =>
   app.group("/auth", (app) =>
@@ -26,8 +27,9 @@ export const authController = (app: Elysia) =>
           });
 
           if (!user) {
+            logger.debug("Login failed: No user found.", { username: username })
             set.status = 401;
-            return;
+            return "Username or password not found.";
           }
 
           // Decoded payload in the form `username:password`
@@ -39,8 +41,9 @@ export const authController = (app: Elysia) =>
             user.password?.value as string
           );
           if (!doesPasswordMatches) {
+            logger.debug("Login failed: No password mismatch.", { username: username })
             set.status = 401;
-            return;
+            return "Username or password not found.";
           }
 
           const expiresAt = dayjs().add(7, "days").toDate();

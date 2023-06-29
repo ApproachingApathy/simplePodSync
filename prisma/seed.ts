@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
+import { hashPassword } from "../src/password";
 
 await main();
 
@@ -58,10 +59,7 @@ async function main() {
       username: "test",
       password: {
         create: {
-          value: await Bun.password.hash("password", {
-            algorithm: "bcrypt",
-            cost: 4,
-          }),
+          value: await hashPassword("password"),
         },
       },
     },

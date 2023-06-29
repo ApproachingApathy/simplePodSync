@@ -21,12 +21,10 @@ const getOSConfigDefaults = () => {
     const defaultConfig: Partial<Config> = {}
     let dataHome: string | undefined
     let configHome: string | undefined
-    let databasePath: string | undefined
     switch (platform()) {
         case "linux":
             dataHome = resolve(join(Bun.env.XDG_DATA_HOME ?? `${Bun.env.HOME}/.local/share`, "simple-pod-sync")) 
             configHome = resolve(join(Bun.env.XDG_CONFIG_HOME ?? `${Bun.env.HOME}/.config`, "simple-pod-sync"))
-            databasePath = resolve(join(dataHome, "simple-pod-sync.db"))
     }
     if (!dataHome || !configHome) throw new Error("Configuration Error: Missing Dir")
     defaultConfig.log_dir = resolve(join(dataHome, "logs"))
@@ -35,9 +33,6 @@ const getOSConfigDefaults = () => {
         log_dir: resolve(join(dataHome, "logs")),
         config_dir: resolve(configHome),
         data_dir: resolve(dataHome),
-        database: {
-            url: databasePath ? Bun.pathToFileURL(databasePath).toString() : undefined
-        }
     }
 }
 
@@ -58,6 +53,11 @@ const getConfigFromFile = async (configDir: FilePath) => {
     const file = Bun.file(configFilePath)
     return TOML.parse(await file.text() ?? "")
     // return {}
+}
+
+const createDbUrl = (dataDirPath: string): URL => {
+    const databasePath = resolve(join(dataDirPath, "simple-pod-sync.db"))
+    return Bun.pathToFileURL(databasePath)
 }
 
 const createConfigFile = async (configDir: FilePath, config: Config) => {
@@ -91,7 +91,15 @@ export const getConfig = async () => {
     const osDefaults = getOSConfigDefaults()
     const envSettings = getEnvConfig()
 
-    const config = deepmerge(defaults, osDefaults, envSettings) as Config
+    const baseConfig = deepmerge(defaults, osDefaults, envSettings) as Config
+    const dbUrl = createDbUrl(baseConfig.data_dir)
+    const config = deepmerge(baseConfig, {
+        database: {
+            url: dbUrl.toString()
+        }
+    }) as Config
+
+    
     let fileConfig = {}
     try {
         fileConfig = await getConfigFromFile(config.config_dir)
@@ -100,6 +108,7 @@ export const getConfig = async () => {
     }
     
     const finalConfig = deepmerge(defaults, osDefaults, fileConfig, envSettings) as  Config
+    console.log(config)
     return finalConfig
 }
 
