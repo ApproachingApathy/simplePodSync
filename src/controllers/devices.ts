@@ -6,7 +6,7 @@ import { db } from "../db/db";
 import { Prisma, Device } from "@prisma/client";
 
 const convertDeviceForTransport = (
-  dbDevice: { type: { value: string } } & Device
+  dbDevice: { type: { value: string } } & Device,
 ) => {
   return {
     id: dbDevice.clientId,
@@ -61,7 +61,7 @@ export const devicesController = (app: Elysia) =>
             type: t.String({ pattern: "desktop|laptop|mobile|server|other" }),
           }),
           beforeHandle: [isSignedIn, isUserNameSessionAndPathMatch],
-        }
+        },
       )
       .get(
         "/:username",
@@ -85,6 +85,6 @@ export const devicesController = (app: Elysia) =>
         },
         {
           beforeHandle: [isSignedIn, isUserNameSessionAndPathMatch],
-        }
-      )
+        },
+      ),
   );

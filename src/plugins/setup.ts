@@ -10,12 +10,12 @@ export const setupPlugin = (app: Elysia) =>
   app
     // remove ".json from params"
     .derive(() => {
-        return {
-            requestReceivedAt: Date.now()
-        }
+      return {
+        requestReceivedAt: Date.now(),
+      };
     })
     .on("afterHandle", ({ set, requestReceivedAt }) => {
-        set.headers["X-Response-Time"] = `${Date.now() - requestReceivedAt}ms`
+      set.headers["X-Response-Time"] = `${Date.now() - requestReceivedAt}ms`;
     })
     .onTransform(({ params }) => {
       if (!params) return;
@@ -54,7 +54,7 @@ export const setupPlugin = (app: Elysia) =>
         session: session ?? undefined,
       };
     })
-    .derive(({request}) => {
+    .derive(({ request }) => {
       return { requestId: request.headers.get("x-request-id") ?? randomUUID() };
     });
 // .use(authPlugin)

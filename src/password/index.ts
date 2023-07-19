@@ -1,2 +1,2 @@
-export * from "./hash"
-export * from "./verify"
+export * from "./hash";
+export * from "./verify";

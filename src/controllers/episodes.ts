@@ -11,7 +11,7 @@ const convertEpisodeActionForTransport = (
     device: { clientId: string };
     subscription: { url: string };
     type: { value: string };
-  } & EpisodeAction
+  } & EpisodeAction,
 ) => {
   return {
     podcast: episodeAction.subscription.url,
@@ -83,13 +83,13 @@ export const episodesController = (app: Elysia) =>
               started: t.Optional(t.Numeric()),
               position: t.Optional(t.Numeric()),
               total: t.Optional(t.Numeric()),
-            })
+            }),
           ),
           beforeHandle: [
             isSignedIn,
             (req) => isUserNameSessionAndPathMatch(req),
           ],
-        }
+        },
       )
       .get(
         "/:username",
@@ -148,6 +148,6 @@ export const episodesController = (app: Elysia) =>
             isSignedIn,
             (req) => isUserNameSessionAndPathMatch(req),
           ],
-        }
-      )
+        },
+      ),
   );

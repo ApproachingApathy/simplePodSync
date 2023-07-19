@@ -27,7 +27,9 @@ export const authController = (app: Elysia) =>
           });
 
           if (!user) {
-            logger.debug("Login failed: No user found.", { username: username })
+            logger.debug("Login failed: No user found.", {
+              username: username,
+            });
             set.status = 401;
             return "Username or password not found.";
           }
@@ -38,10 +40,12 @@ export const authController = (app: Elysia) =>
 
           const doesPasswordMatches = await Bun.password.verify(
             decodedPassword,
-            user.password?.value as string
+            user.password?.value as string,
           );
           if (!doesPasswordMatches) {
-            logger.debug("Login failed: No password mismatch.", { username: username })
+            logger.debug("Login failed: No password mismatch.", {
+              username: username,
+            });
             set.status = 401;
             return "Username or password not found.";
           }
@@ -69,9 +73,9 @@ export const authController = (app: Elysia) =>
           headers: t.Object({
             authorization: t.Optional(t.String({ pattern: "^Basic (.*)" })),
           }),
-        }
+        },
       )
       .post("/:username/logout.json", ({}) => {
         return;
-      })
+      }),
   );

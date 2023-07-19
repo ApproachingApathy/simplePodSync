@@ -60,7 +60,7 @@ export const subscriptionController = (app: Elysia) =>
             isSignedIn,
             (req) => isUserNameSessionAndPathMatch(req),
           ],
-        }
+        },
       )
       .post(
         "/:username/:device",
@@ -139,6 +139,6 @@ export const subscriptionController = (app: Elysia) =>
             isSignedIn,
             (req) => isUserNameSessionAndPathMatch(req),
           ],
-        }
-      )
+        },
+      ),
   );
