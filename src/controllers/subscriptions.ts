@@ -65,7 +65,6 @@ export const subscriptionController = (app: Elysia) =>
       .post(
         "/:username/:device",
         async ({ body, params, session }) => {
-          console.log(params)
           for (let url of body.add) {
             await db.subscriptionAction.create({
               data: {

@@ -3,19 +3,20 @@
   "version": "1.0.42",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts"
   },
   "prisma": {
     "seed": "bun run prisma/seed.ts"
   },
   "dependencies": {
-    "@elysiajs/cookie": "^0.5.2",
-    "@elysiajs/fn": "^0.5.2",
+    "@elysiajs/cookie": "0.5.x",
+    "@elysiajs/fn": "0.5.x",
     "@iarna/toml": "^2.2.5",
     "@prisma/client": "^4.16.1",
     "dayjs": "^1.11.8",
     "deepmerge-ts": "^5.1.0",
-    "elysia": "latest",
+    "elysia": "0.5.x",
     "winston": "^3.9.0"
   },
   "devDependencies": {
