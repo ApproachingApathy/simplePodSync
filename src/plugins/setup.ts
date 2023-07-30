@@ -1,5 +1,4 @@
 import cookie from "@elysiajs/cookie";
-import { authPlugin } from "./auth";
 import Elysia from "elysia";
 import { db } from "../db/db";
 import { randomUUID } from "crypto";
@@ -57,4 +56,3 @@ export const setupPlugin = (app: Elysia) =>
     .derive(({ request }) => {
       return { requestId: request.headers.get("x-request-id") ?? randomUUID() };
     });
-// .use(authPlugin)

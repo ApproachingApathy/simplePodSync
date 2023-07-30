@@ -30,7 +30,6 @@ const app = new Elysia()
   .on("error", ({ error }) => {
     logger.error(error);
   })
-  .get("/info", () => "Simple Pod Sync v0.0.1")
   .group("/simple-sync/api", (app) => app.use(appAuthController))
   .group("/api", (app) =>
     app.group("/2", (app) =>
@@ -41,7 +40,7 @@ const app = new Elysia()
         .use(episodesController),
     ),
   )
-  .get("/", () => "Hello Elysia")
+  .get("/", () => "Simple Pod Sync v0.0.1")
   .listen(3000);
 
 logger.debug("Configuration", { config });
