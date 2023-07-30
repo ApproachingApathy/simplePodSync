@@ -12,8 +12,9 @@ import { appAuthController } from "./controllers/appAuth";
 
 const app = new Elysia()
   .use(setupPlugin)
-  .on("request", ({ requestId }) => {
+  .on("request", ({ requestId, request }) => {
     logger.debug(`Received Request ${requestId}`);
+    logger.debug(`Request url: ${request.url}`)
   })
   .on("beforeHandle", (context) => {
     logger.debug("Handling Request", {
@@ -41,6 +42,12 @@ const app = new Elysia()
     ),
   )
   .get("/", () => "Simple Pod Sync v0.0.1")
+  .on("error", ({ error, request }) => {
+    logger.debug({
+      error: error,
+      url: request.url
+    })
+  })
   .listen(3000);
 
 logger.debug("Configuration", { config });

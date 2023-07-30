@@ -65,6 +65,7 @@ export const subscriptionController = (app: Elysia) =>
       .post(
         "/:username/:device",
         async ({ body, params, session }) => {
+          console.log(params)
           for (let url of body.add) {
             await db.subscriptionAction.create({
               data: {
@@ -126,7 +127,7 @@ export const subscriptionController = (app: Elysia) =>
           }
 
           return {
-            timestamp: dayjs().toDate(),
+            timestamp: dayjs().unix(),
             update_urls: [],
           };
         },
