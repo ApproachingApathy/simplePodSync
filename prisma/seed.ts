@@ -16,7 +16,7 @@ async function main() {
 
   for (let dt of deviceTypes) {
     await prisma.deviceType.upsert({
-      where: dt,
+      where: { value: dt.value },
       create: dt,
       update: {},
     });
@@ -29,7 +29,7 @@ async function main() {
 
   for (let sa of subscriptionActionTypes) {
     await prisma.subscriptionActionType.upsert({
-      where: sa,
+      where: { value: sa.value },
       create: sa,
       update: {},
     });
@@ -45,7 +45,7 @@ async function main() {
 
   for (let ea of episodeActionTypes) {
     await prisma.episodeActionType.upsert({
-      where: ea,
+      where: { value: ea.value },
       create: ea,
       update: {},
     });
