@@ -1,11 +1,15 @@
-FROM oven/bun:0.7.1
+FROM oven/bun:0.7.3
 
-WORKDIR /app
+WORKDIR /usr/app
 
 COPY package.json ./
 COPY bun.lockb ./
 
 RUN bun install --production
+
+COPY ./prisma/schema.prisma ./prisma/schema.prisma
+
+RUN bunx prisma generate
 
 COPY . .
 

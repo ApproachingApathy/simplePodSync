@@ -13,7 +13,7 @@
     "@elysiajs/cookie": "0.5.x",
     "@elysiajs/fn": "0.5.x",
     "@iarna/toml": "^2.2.5",
-    "@prisma/client": "^4.16.1",
+    "@prisma/client": "^4.0.0",
     "dayjs": "^1.11.8",
     "deepmerge-ts": "^5.1.0",
     "elysia": "0.5.x",
@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "bun-types": "latest",
-    "prisma": "^4.16.1"
+    "prisma": "^4.0.0"
   },
   "module": "src/index.js"
 }

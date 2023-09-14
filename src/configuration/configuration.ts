@@ -103,6 +103,7 @@ export const getConfig = async () => {
   const envSettings = getEnvConfig();
 
   const baseConfig = deepmerge(defaults, osDefaults, envSettings) as Config;
+  console.log("base", baseConfig)
   const dbUrl = createDbUrl(baseConfig.data_dir);
   const config = deepmerge(baseConfig, {
     database: {
