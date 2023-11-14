@@ -48,7 +48,7 @@ const app = new Elysia()
       url: request.url
     })
   })
-  .listen(3000);
+  .listen(8080);
 
 logger.debug("Configuration", { config });
 logger.info(`Elysia is running at ${app.server?.hostname}:${app.server?.port}`);

@@ -18,7 +18,7 @@ ENV SIMPLE_POD_DATA_DIR $HOME/local/share/simple-pod-sync
 
 RUN mkdir -p $SIMPLE_POD_DATA_DIR $SIMPLE_POD_CONFIG_DIR
 
-EXPOSE 3000
+EXPOSE 8080
 
-CMD ["bun", "run", "start"]
+ENTRYPOINT ["bun", "run", "start"]
 
